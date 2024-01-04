@@ -4,6 +4,9 @@ import 'package:khiem_flutter3/cart/cart_bloc.dart';
 import 'package:khiem_flutter3/cart/cart_widget.dart';
 import 'package:khiem_flutter3/home/product_widget.dart';
 
+import '../data/cart_items.dart';
+import '../data/cart_items.dart';
+
 class CartScreen extends StatefulWidget {
   const CartScreen({super.key});
 
@@ -41,19 +44,16 @@ class _CartScreenState extends State<CartScreen> {
           }
         },
         builder: (context, state) {
-          switch (state.runtimeType) {
-            case CartSuccessState:
-              final successState = state as CartSuccessState;
-              return ListView.builder(
-                  itemCount: successState.cartItems.length,
-                  itemBuilder: (context, index) {
-                    return CartWidget(
-                        productDataModel: successState.cartItems[index],
-                        cartBloc: cartBloc);
-                  });
-            default:
-          }
-          return Container();
+              if(state is CartSuccessState && state.cartItems.isNotEmpty) {
+                return ListView.builder(
+                    itemCount: state.cartItems.length,
+                    itemBuilder: (context, index) {
+                      return CartWidget(
+                          productDataModel: state.cartItems[index],
+                          cartBloc: cartBloc);
+                    });
+              }
+              return const Center(child: Text("Trống",style: TextStyle(color: Colors.black,fontSize: 40),),);
         },
       ),
     );
